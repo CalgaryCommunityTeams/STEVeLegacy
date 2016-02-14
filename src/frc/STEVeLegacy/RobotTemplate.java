@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class RobotTemplate extends IterativeRobot {
 
-	Joystick driveStick;
+	Joystick driveGamepad;
 	RobotDrive mainDrive;
 	Joystick turretStick;
 	Talon aimX;
@@ -29,21 +29,19 @@ public class RobotTemplate extends IterativeRobot {
 	Talon fireWheel2;
 	Talon pusher;
 
-	boolean firing;
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		driveStick = new Joystick(0);
-		mainDrive = new RobotDrive(0, 1, 2, 3);
-		turretStick = new Joystick(1);
-		aimX = new Talon(4);
-		aimY = new Talon(5);
-		fireWheel1 = new Talon(6);
-		fireWheel2 = new Talon(7);
-		pusher = new Talon(8);
+		driveGamepad = new Joystick(1);
+		mainDrive = new RobotDrive(1, 2, 3, 4);
+		turretStick = new Joystick(2);
+		aimX = new Talon(5);
+		aimY = new Talon(6);
+		fireWheel1 = new Talon(7);
+		fireWheel2 = new Talon(8);
+		pusher = new Talon(9);
 	}
 
 	/**
@@ -57,18 +55,23 @@ public class RobotTemplate extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		mainDrive.arcadeDrive(driveStick);
+		mainDrive.tankDrive(driveGamepad.getRawAxis(2), driveGamepad.getRawAxis(5));
 
-		aimX.set(turretStick.getRawAxis(0));
-		aimY.set(turretStick.getRawAxis(1));
+		aimX.set(turretStick.getRawAxis(1));
+		aimY.set(turretStick.getRawAxis(2));
 
-		if (turretStick.getRawButton(1)) {
-			fireWheel1.set((turretStick.getRawAxis(3) + 1) / 4);
-			fireWheel2.set((turretStick.getRawAxis(3) + 1) / 4);
+		if (turretStick.getRawButton(3)) {
+			fireWheel1.set((-turretStick.getRawAxis(3) + 1) / 2);
+			fireWheel2.set((-turretStick.getRawAxis(3) + 1) / 2);
 
-			if (turretStick.getRawButton(0)) {
+			if (turretStick.getRawButton(1)) {
 				pusher.set(0.5);
+			} else {
+				pusher.set(0);
 			}
+		} else {
+			fireWheel1.set(0);
+			fireWheel2.set(0);
 		}
 	}
 
