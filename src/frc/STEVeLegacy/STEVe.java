@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.Talon;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class RobotTemplate extends IterativeRobot {
+public class STEVe extends IterativeRobot {
 
 	Joystick driveGamepad;
 	RobotDrive mainDrive;

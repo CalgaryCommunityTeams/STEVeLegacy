@@ -1,6 +1,6 @@
 MIDlet-Name: STEVeLegacy
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST
-MIDlet-1: RobotTemplate, ,  frc.STEVeLegacy.RobotTemplate
+MIDlet-1: STEVe, ,  frc.STEVeLegacy.STEVe
 MicroEdition-Profile: IMP-1.0
 MicroEdition-Configuration: CLDC-1.1
