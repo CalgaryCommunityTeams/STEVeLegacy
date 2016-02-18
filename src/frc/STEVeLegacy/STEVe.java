@@ -27,7 +27,7 @@ public class STEVe extends IterativeRobot {
 	Talon aimY;
 	Talon fireWheel1;
 	Talon fireWheel2;
-	Talon pusher;
+	Pusher pusher;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -41,7 +41,7 @@ public class STEVe extends IterativeRobot {
 		aimY = new Talon(6);
 		fireWheel1 = new Talon(7);
 		fireWheel2 = new Talon(8);
-		pusher = new Talon(9);
+		pusher = new Pusher(new Talon(9));
 	}
 
 	/**
@@ -65,9 +65,7 @@ public class STEVe extends IterativeRobot {
 			fireWheel2.set((-turretStick.getRawAxis(3) + 1) / 2);
 
 			if (turretStick.getRawButton(1)) {
-				pusher.set(0.5);
-			} else {
-				pusher.set(0);
+				pusher.doIt();
 			}
 		} else {
 			fireWheel1.set(0);
