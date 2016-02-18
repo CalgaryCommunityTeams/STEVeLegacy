@@ -40,9 +40,9 @@ public class Pusher {
 				Thread.sleep(TIME_F);
 				motor.set(-SPEED);
 				Thread.sleep(TIME_B);
-				motor.set(0);
 			} catch (InterruptedException e) {
 			}
+			motor.set(0);//Motor should be set to zero even if interrupted
 		}
 	}
 }
