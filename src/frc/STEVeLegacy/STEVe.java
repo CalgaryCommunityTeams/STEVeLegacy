@@ -31,6 +31,8 @@ public class STEVe extends IterativeRobot {
 
 	Joystick calStick;
 
+	boolean fireHeldLastTime = false;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -73,8 +75,11 @@ public class STEVe extends IterativeRobot {
 			System.out.print("	fireWheel2:	");
 			System.out.println(fireWheel2.get());
 
-			if (turretStick.getRawButton(1)) {
+			if (turretStick.getRawButton(1) && !fireHeldLastTime) {
 				pusher.doIt();
+				fireHeldLastTime = true;
+			} else {
+				fireHeldLastTime = false;
 			}
 		} else {
 			fireWheel1.set(0);
