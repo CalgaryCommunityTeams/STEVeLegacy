@@ -29,6 +29,8 @@ public class STEVe extends IterativeRobot {
 	Talon fireWheel2;
 	Pusher pusher;
 
+	Joystick calStick;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -42,6 +44,8 @@ public class STEVe extends IterativeRobot {
 		fireWheel1 = new Talon(7);
 		fireWheel2 = new Talon(8);
 		pusher = new Pusher(new Talon(9));
+
+		calStick = new Joystick(3);
 	}
 
 	/**
@@ -62,7 +66,12 @@ public class STEVe extends IterativeRobot {
 
 		if (turretStick.getRawButton(3)) {
 			fireWheel1.set((-turretStick.getRawAxis(3) + 1) / 2);
-			fireWheel2.set((-turretStick.getRawAxis(3) + 1) / 2);
+			fireWheel2.set((-calStick.getRawAxis(3) + 1) / 2);
+
+			System.out.print("fireWheel1:	");
+			System.out.print(fireWheel1.get());
+			System.out.print("	fireWheel2:	");
+			System.out.println(fireWheel2.get());
 
 			if (turretStick.getRawButton(1)) {
 				pusher.doIt();

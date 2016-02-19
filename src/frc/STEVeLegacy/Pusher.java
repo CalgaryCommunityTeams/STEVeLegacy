@@ -29,6 +29,8 @@ public class Pusher {
 			//Do It
 			pusherThread = new PusherThread();
 			pusherThread.start();
+		} else {
+			System.err.println("Can't let you do that Starfox");
 		}
 	}
 
@@ -36,6 +38,7 @@ public class Pusher {
 
 		public void run() {
 			try {
+				System.out.println("Bombs Away!");
 				motor.set(SPEED);
 				Thread.sleep(TIME_F);
 				motor.set(-SPEED);
