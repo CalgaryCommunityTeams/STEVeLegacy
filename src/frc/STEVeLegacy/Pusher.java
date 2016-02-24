@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.SpeedController;
  */
 public class Pusher {
 
-	private static final double SPEED = 0.5;
+	private static final double SPEED = -1.0;
 	private static final long TIME_F = 200;
 	private static final long TIME_B = 300;
 
