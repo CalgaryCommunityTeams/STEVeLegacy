@@ -77,10 +77,8 @@ public class STEVe extends IterativeRobot {
 
 			if (turretStick.getRawButton(1) && !fireHeldLastTime) {
 				pusher.doIt();
-				fireHeldLastTime = true;
-			} else {
-				fireHeldLastTime = false;
 			}
+			fireHeldLastTime = turretStick.getRawButton(1);
 		} else {
 			fireWheel1.set(0);
 			fireWheel2.set(0);
