@@ -18,7 +18,7 @@ public class Pusher {
 	private static final long TIME_B = 300;
 
 	private PusherThread pusherThread;
-	private SpeedController motor;
+	private final SpeedController motor;
 
 	public Pusher(SpeedController motor) {
 		this.motor = motor;

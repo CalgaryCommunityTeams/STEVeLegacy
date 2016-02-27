@@ -62,9 +62,13 @@ public class STEVe extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		mainDrive.tankDrive(driveGamepad.getRawAxis(2), driveGamepad.getRawAxis(5));
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 
 		aimX.set(turretStick.getRawAxis(1));
-		aimY.set(turretStick.getRawAxis(2));
+		aimY.set(-turretStick.getRawAxis(2));
 
 		if (turretStick.getRawButton(3)) {
 			fireWheel1.set((-turretStick.getRawAxis(3) + 1) / 2);
