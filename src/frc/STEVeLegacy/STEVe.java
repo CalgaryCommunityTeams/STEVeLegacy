@@ -61,7 +61,7 @@ public class STEVe extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		mainDrive.tankDrive(driveGamepad.getRawAxis(2), driveGamepad.getRawAxis(5));
+		mainDrive.arcadeDrive(driveGamepad.getRawAxis(2), driveGamepad.getRawAxis(4));
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
