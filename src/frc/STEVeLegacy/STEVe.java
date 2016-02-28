@@ -20,6 +20,11 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class STEVe extends IterativeRobot {
 
+	private static final double MINSPEED_1 = 0.35;
+	private static final double MINSPEED_2 = 0.35;
+	private static final double MAXSPEED_1 = 0.85;
+	private static final double MAXSPEED_2 = 0.85;
+
 	Joystick driveGamepad;
 	RobotDrive mainDrive;
 	Joystick turretStick;
@@ -71,8 +76,8 @@ public class STEVe extends IterativeRobot {
 		aimY.set(-turretStick.getRawAxis(2));
 
 		if (turretStick.getRawButton(3)) {
-			fireWheel1.set((-turretStick.getRawAxis(3) + 1) / 2);
-			fireWheel2.set((-calStick.getRawAxis(3) + 1) / 2);
+			fireWheel1.set(scaleBoundValue(turretStick.getRawAxis(3), -1, 1, MAXSPEED_1, MINSPEED_1));
+			fireWheel2.set(scaleBoundValue(calStick.getRawAxis(3), -1, 1, MAXSPEED_2, MINSPEED_2));
 
 			System.out.print("fireWheel1:	");
 			System.out.print(fireWheel1.get());
@@ -94,6 +99,12 @@ public class STEVe extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 
+	}
+
+	static public double scaleBoundValue(double value, double inmax, double inmin, double outmax, double outmin) {
+		double scale = (outmax - outmin) / (inmax - inmin);
+
+		return ((value - inmin) * scale) + outmin;
 	}
 
 }
