@@ -25,16 +25,14 @@ public class STEVe extends IterativeRobot {
 	private static final double MAXSPEED_1 = 0.85;
 	private static final double MAXSPEED_2 = 0.85;
 
-	Joystick driveGamepad;
+	Joystick LStick;
+	Joystick RStick;
 	RobotDrive mainDrive;
-	Joystick turretStick;
 	Talon aimX;
 	Talon aimY;
 	Talon fireWheel1;
 	Talon fireWheel2;
 	Pusher pusher;
-
-	Joystick calStick;
 
 	boolean fireHeldLastTime = false;
 
@@ -43,16 +41,14 @@ public class STEVe extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		driveGamepad = new Joystick(1);
+		LStick = new Joystick(1);
+		RStick = new Joystick(2);
 		mainDrive = new RobotDrive(1, 2, 3, 4);
-		turretStick = new Joystick(2);
 		aimX = new Talon(5);
 		aimY = new Talon(6);
 		fireWheel1 = new Talon(7);
 		fireWheel2 = new Talon(8);
 		pusher = new Pusher(new Talon(9));
-
-		calStick = new Joystick(3);
 	}
 
 	/**
@@ -66,28 +62,40 @@ public class STEVe extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		mainDrive.arcadeDrive(driveGamepad.getRawAxis(2), driveGamepad.getRawAxis(4));
+		mainDrive.arcadeDrive(LStick.getRawAxis(2), RStick.getRawAxis(1));
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 
-		aimX.set(turretStick.getRawAxis(1));
-		aimY.set(-turretStick.getRawAxis(2));
+		if (LStick.getRawButton(2)) {
+			aimY.set(1.0);
+		} else if (LStick.getRawButton(3)) {
+			aimY.set(-1.0);
+		} else {
+			aimY.set(0);
+		}
+		if (LStick.getRawButton(4)) {
+			aimX.set(1.0);
+		} else if (LStick.getRawButton(5)) {
+			aimX.set(-1.0);
+		} else {
+			aimX.set(0);
+		}
 
-		if (turretStick.getRawButton(3)) {
-			fireWheel1.set(scaleBoundValue(turretStick.getRawAxis(3), -1, 1, MAXSPEED_1, MINSPEED_1));
-			fireWheel2.set(scaleBoundValue(calStick.getRawAxis(3), -1, 1, MAXSPEED_2, MINSPEED_2));
+		if (RStick.getRawButton(3)) {
+			fireWheel1.set(scaleBoundValue(LStick.getRawAxis(3), -1, 1, MAXSPEED_1, MINSPEED_1));
+			fireWheel2.set(scaleBoundValue(RStick.getRawAxis(3), -1, 1, MAXSPEED_2, MINSPEED_2));
 
 			System.out.print("fireWheel1:	");
 			System.out.print(fireWheel1.get());
 			System.out.print("	fireWheel2:	");
 			System.out.println(fireWheel2.get());
 
-			if (turretStick.getRawButton(1) && !fireHeldLastTime) {
+			if (RStick.getRawButton(1) && !fireHeldLastTime) {
 				pusher.doIt();
 			}
-			fireHeldLastTime = turretStick.getRawButton(1);
+			fireHeldLastTime = RStick.getRawButton(1);
 		} else {
 			fireWheel1.set(0);
 			fireWheel2.set(0);
