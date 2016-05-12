@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,10 +21,8 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class STEVe extends IterativeRobot {
 
-	private static final double MINSPEED_1 = 0.35;
-	private static final double MINSPEED_2 = 0.35;
-	private static final double MAXSPEED_1 = 0.85;
-	private static final double MAXSPEED_2 = 0.85;
+	private static final double MINSPEED = 0.35;
+	private static final double MAXSPEED = 1.00; //Should be 0.85, I really hope you know what your doing
 
 	Joystick LStick;
 	Joystick RStick;
@@ -49,6 +48,11 @@ public class STEVe extends IterativeRobot {
 		fireWheel1 = new Talon(7);
 		fireWheel2 = new Talon(8);
 		pusher = new Pusher(new Talon(9));
+
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 	}
 
 	/**
@@ -62,30 +66,32 @@ public class STEVe extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
+		double fireScale = SmartDashboard.getNumber("FireScale", .85);
+		double speedMod = SmartDashboard.getNumber("SpeedMod", 1.0);
+		//I don't know how the dashboard works
+
 		mainDrive.arcadeDrive(LStick.getRawAxis(2), RStick.getRawAxis(1));
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
+		mainDrive.setMaxOutput(speedMod);
 
 		if (LStick.getRawButton(2)) {
-			aimY.set(1.0);
-		} else if (LStick.getRawButton(3)) {
 			aimY.set(-1.0);
+		} else if (LStick.getRawButton(3)) {
+			aimY.set(1.0);
 		} else {
 			aimY.set(0);
 		}
 		if (LStick.getRawButton(4)) {
-			aimX.set(1.0);
-		} else if (LStick.getRawButton(5)) {
 			aimX.set(-1.0);
+		} else if (LStick.getRawButton(5)) {
+			aimX.set(1.0);
 		} else {
 			aimX.set(0);
 		}
 
 		if (RStick.getRawButton(3)) {
-			fireWheel1.set(scaleBoundValue(LStick.getRawAxis(3), -1, 1, MAXSPEED_1, MINSPEED_1));
-			fireWheel2.set(scaleBoundValue(RStick.getRawAxis(3), -1, 1, MAXSPEED_2, MINSPEED_2));
+			double fireSpeed = scaleBoundValue(LStick.getRawAxis(3), -1, 1, MAXSPEED, MINSPEED);
+			fireWheel1.set(fireSpeed * fireScale);
+			fireWheel2.set(fireSpeed);
 
 			System.out.print("fireWheel1:	");
 			System.out.print(fireWheel1.get());
@@ -95,11 +101,11 @@ public class STEVe extends IterativeRobot {
 			if (RStick.getRawButton(1) && !fireHeldLastTime) {
 				pusher.doIt();
 			}
-			fireHeldLastTime = RStick.getRawButton(1);
 		} else {
 			fireWheel1.set(0);
 			fireWheel2.set(0);
 		}
+		fireHeldLastTime = RStick.getRawButton(1);
 	}
 
 	/**
